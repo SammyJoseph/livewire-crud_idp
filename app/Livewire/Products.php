@@ -8,11 +8,11 @@ use Livewire\Component;
 class Products extends Component
 {
     public $products, $description, $quantity, $product_id;
-    public $modal = false, $deleteModal = false;
+    public $modal = false, $deleteModal = false, $toast = false;
 
     public function render()
     {
-        $this->products = Product::orderBy('updated_at', 'desc')->get();
+        $this->products = Product::orderBy('id', 'desc')->get();
 
         return view('livewire.products');
     }
@@ -28,6 +28,7 @@ class Products extends Component
 
         $this->closeModal();
         session()->flash('message', $this->product_id ? 'El registro se actualizó' : 'El registro se creó');
+        $this->toast = true;
     }
 
     public function destroy()
@@ -36,6 +37,7 @@ class Products extends Component
         $product->delete();
         $this->reset(['deleteModal']);
         session()->flash('message', 'El registro se eliminó');
+        $this->toast = true;
     }
 
     public function createProductButton()
